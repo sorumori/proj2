@@ -1,0 +1,58 @@
+syntax = "proto3";
+package de.tub;
+
+// Note: uint32 maps to int in Java, where the most significant bit is treated as the sign bit
+// However, in this implementation it is guaranteed that every uint will always be a positiv int
+// even if treated as signed
+
+// Every money transaction is done in cents
+
+service StockService {
+  rpc GetStockPrices(GetStocksRequest) returns (GetAllStocksResponse);
+  rpc GetOwnStocks(GetStocksRequest) returns (GetOwnStocksResponse);
+  rpc GetBalance(GetStocksRequest) returns (GetBalanceResponse);
+  rpc BuyStock(TradeStockRequest) returns (TradeStockResponse);
+  rpc SellStock(TradeStockRequest) returns (TradeStockResponse);
+}
+
+message GetStocksRequest {
+  string auth = 1;
+}
+
+message GetAllStocksResponse {
+  repeated Stock stocks = 1;
+}
+
+message Stock {
+  string name = 1;
+  uint64 price = 2;
+}
+
+message GetOwnStocksResponse {
+  repeated OwnStock stocks = 1;
+}
+
+message OwnStock {
+  string name = 1;
+  uint64 amount = 2;
+}
+
+message GetBalanceResponse {
+  uint64 balance = 1;
+  string balance_str = 2;
+}
+
+message TradeStockRequest {
+  string auth = 1;
+  string stock_name = 2;
+  uint64 amount = 3;
+}
+
+message TradeStockResponse {
+  // If you bought: The price you paid
+  //
+  // If you sold, the money you made
+  uint64 money = 1;
+  // Your updated balance
+  uint64 balance = 2;
+}

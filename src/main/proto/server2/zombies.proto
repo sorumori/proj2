@@ -1,0 +1,82 @@
+syntax="proto3";
+package de.tub;
+option go_package="git.tu-berlin.de/3s-teaching/as-ss25/proto";
+
+// Scenario 6: Zombie apocalypse, will you survive?
+//
+// This gRPC API simulates a post-apocalyptic world overrun by zombies.
+// Clients can:
+// - Query locations for safety and danger levels.
+// - Request survivor messages found at each location.
+// - Calculate their own chances of survival based on skills and stats.
+
+service ZombieApocalypseGuide {
+    rpc LocationInfo (LocationRequest) returns (LocationResponse);
+    rpc SurvivorReport (SurvivorReportRequest) returns (SurvivorReportResponse);
+    rpc SurvivalCalculator (SurvivalRequest) returns (SurvivalResponse);
+}
+
+enum Location {
+    city_center = 0;
+    university = 1;
+    suburb = 2;
+    forest = 3;
+    airport = 4;
+    hospital = 5;
+    shopping_mall = 6;
+    train_station = 7;
+    underground_bunker = 8;
+    police_station = 9;
+    abandoned_farm = 10;
+    military_base = 11;
+    gas_station = 12;
+    harbor = 13;
+    bridge = 14;
+    mountains = 15;
+    cemetery = 16;
+    amusement_park = 17;
+    library = 18;
+    power_plant = 19;
+}
+
+message LocationRequest {
+    string auth = 1;
+    Location location = 2;
+}
+
+message LocationResponse {
+    Location location = 1;
+    string description = 2;
+    int32 dangerLevel = 3;
+}
+
+message SurvivorReportRequest {
+    string auth = 1;
+    Location location = 2;
+}
+
+message SurvivorReportResponse {
+    Location location = 1;
+    repeated string report = 2;
+}
+
+enum ZombieApocalypseAbility {
+    IMMUNE_TO_BITES = 0;
+    FAST_RUNNER = 1;
+    IMPERSONATE_ZOMBIES = 2;
+    AWESOME_ZOMBIE_DANCE_MOVES = 3; // Dancing can give temporarily lift the spirits
+}
+
+message SurvivalRequest {
+    string auth = 1;
+    string name = 2;
+    repeated ZombieApocalypseAbility abilities = 3;
+    int32 strength = 4; // On a level of 1-10 only!
+}
+
+message SurvivalResponse {
+    int32 pointsTotal = 1;
+    int32 probabilityToSurviveOneYear = 2;
+    int32 probabilityToSurviveTwoYears = 3;
+    string evaluation = 4;
+}

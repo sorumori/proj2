@@ -1,0 +1,35 @@
+syntax="proto3";
+package de.tub;
+option go_package="git.tu-berlin.de/3s-teaching/as-ss25/proto";
+
+//
+// Get advice from a wise magician!
+//
+
+service WiseMagician {
+    rpc GetAdviceCategories (AdviceCategoriesRequest) returns (AdviceCategoriesResponse);
+    rpc GetAnyAdvice (RandomAdviceRequest) returns (AdviceResponse);
+    rpc GetSpecificAdvice (SpecificAdviceRequest) returns (AdviceResponse);
+}
+
+message AdviceCategoriesRequest {
+    string auth = 1;
+}
+
+message AdviceCategoriesResponse {
+    repeated string categories = 1;
+}
+
+message RandomAdviceRequest {
+    string auth = 1;
+}
+
+message SpecificAdviceRequest {
+    string auth = 1;
+    string category = 2;
+}
+
+message AdviceResponse {
+    string category = 1;
+    string magicAdvice = 2;
+}

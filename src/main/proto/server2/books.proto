@@ -1,0 +1,49 @@
+syntax="proto3";
+package de.tub;
+
+option go_package="git.tu-berlin.de/3s-teaching/as-ss25/proto";
+option java_multiple_files = true;
+option java_package = "de.tub";
+
+//
+// Get information for books and rate them!
+//
+
+service BookRating {
+    rpc RateBook (RatingRequest) returns (RatingResponse);
+    rpc GetAllBooks (AllBooksRequest) returns (AllBooksResponse);
+    rpc GetBookInfo (BookInfoRequest) returns (BookInfoResponse);
+}
+
+message RatingRequest {
+    string auth = 1;
+    string bookTitle = 2;
+    int32 rating = 3; // valid values 1-10
+}
+
+message RatingResponse {
+    string bookTitle = 1;
+    float averageRating = 2;
+    int32 totalRatings = 3;
+}
+
+message AllBooksRequest {
+    string auth = 1;
+}
+
+message AllBooksResponse {
+    repeated string bookTitles = 1;
+}
+
+message BookInfoRequest {
+    string auth = 1;
+    string bookTitle = 2;
+}
+
+message BookInfoResponse {
+    string bookTitle = 2;
+    string author = 3;
+    int32 year = 4;
+    int32 pages = 5;
+    float averageRating = 6;
+}

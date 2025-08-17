@@ -1,0 +1,34 @@
+syntax="proto3";
+package de.tub;
+option go_package="git.tu-berlin.de/3s-teaching/as-ss25/proto";
+
+//
+// Find out how to care for your plants!
+//
+
+service FriendlyPlantGuide {
+    rpc ListPlants (ListPlantsRequest) returns (ListPlantsResponse);
+    rpc EvaluatePlantHealth (PlantRequest) returns (PlantResponse);
+}
+
+message ListPlantsRequest {
+    string auth = 1;
+}
+
+message ListPlantsResponse {
+    repeated string plants = 1;
+}
+
+message PlantRequest {
+    string auth = 1;
+    string plantName = 2;
+    int32 wateringFrequency = 4; // 1-10
+    float temperature = 5;
+    float humidity = 6;
+}
+
+message PlantResponse {
+    string plantName = 1;
+    string careInstructions = 2;
+    string healthStatus = 3;
+}

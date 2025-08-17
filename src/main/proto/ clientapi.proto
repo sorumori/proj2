@@ -1,0 +1,37 @@
+syntax = "proto3";
+package clientapi;
+option java_multiple_files = true;
+option java_package = "clientapi";
+
+service ClientBookService {
+  rpc GetBookInfo (BookRequest) returns (BookInfoResponse);
+  rpc GetAllBooks (AllBooksRequest) returns (AllBooksResponse);
+  rpc GetTopBooks (TopBooksRequest) returns (TopBooksResponse);
+}
+
+message BookRequest {
+  string title = 1;
+}
+
+message BookInfoResponse {
+  string title = 1;
+  string author = 2;
+  int32 year = 3;
+  int32 pages = 4;
+  float average_rating = 5;
+}
+
+message AllBooksRequest {
+}
+
+message AllBooksResponse {
+  repeated string bookTitles = 1;
+}
+
+message TopBooksRequest {
+  int32 count = 1;
+}
+
+message TopBooksResponse {
+  repeated BookInfoResponse books = 1;
+}

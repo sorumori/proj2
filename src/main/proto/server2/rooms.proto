@@ -1,0 +1,50 @@
+syntax="proto3";
+package de.tub;
+option go_package="git.tu-berlin.de/3s-teaching/as-ss25/proto";
+
+//
+// Book a room for your seminar and find out if its broken!
+//
+
+service RoomBooking {
+    rpc ListRooms (ListRoomsRequest) returns (ListRoomsResponse);
+    rpc BookRoom (BookingRequest) returns (BookingResponse);
+    rpc GetRoomStatus (RoomStatusRequest) returns (RoomStatusResponse);
+}
+
+message ListRoomsRequest {
+    string auth = 1;
+}
+
+message ListRoomsResponse {
+    repeated string RoomNames = 1;
+}
+
+message BookingRequest {
+    string auth = 1;
+    string roomName = 2;
+    int32 startingUnixTimestamp = 3;
+}
+
+message BookingResponse {
+    string roomName = 1;
+    bool successful = 2;
+}
+
+message RoomStatusRequest {
+    string auth = 1;
+    string roomName = 2;
+}
+
+message RoomStatusResponse {
+    string roomName = 1;
+    int32 capacity = 2;
+    repeated Defect defects = 4;
+    repeated int32 bookedAtUnix = 5;
+}
+
+message Defect {
+    int32 severity = 1;
+    string description = 2;
+    int32 capacityReductionPercent = 3;
+}

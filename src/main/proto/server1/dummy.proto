@@ -1,0 +1,21 @@
+syntax = "proto3";
+package de.tub;
+
+service DummyService {
+  // Dummy Example
+  // This just returns the input
+  // ONLY use this to check whether your auth is working correctly - it will not be graded!
+  rpc Dummy(DummyRequest) returns (DummyResponse);
+}
+
+// Dummy
+// Don't use this for anything else than testing your auth.
+
+message DummyRequest {
+  string auth = 1;
+  int32 input = 2;
+}
+
+message DummyResponse {
+  string output = 1;
+}

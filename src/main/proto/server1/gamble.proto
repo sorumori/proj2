@@ -1,0 +1,86 @@
+syntax = "proto3";
+package de.tub;
+
+// Note: uint32 maps to int in Java, where the most significant bit is treated as the sign bit
+// However, in this implementation it is guaranteed that every uint will always be a positive int
+// even if treated as signed
+
+// Every money transaction is done in cents
+
+service GambleService {
+  rpc GambleRoulette(RouletteRequest) returns (RouletteResponse);
+}
+
+message RouletteRequest {
+  string auth = 1;
+  // All bets
+  repeated RouletteBet bets = 2;
+}
+
+// A single bet
+message RouletteBet {
+  // How much to bet
+  //
+  // The money will be reduced from your account, before the game starts
+  uint64 bet_amount = 1;
+  // Type of bet
+  oneof bet {
+    uint32 single_number = 2;
+    RouletteColour colour = 3;
+    RouletteNumType num_type = 4;
+    RouletteHalf half = 5;
+    RouletteDozen dozen = 6;
+    RouletteColumn column = 7;
+  }
+}
+
+enum RouletteColour {
+  ROULETTE_COLOUR_UNSPECIFIED = 0;
+  RED = 1;
+  BLACK = 2;
+}
+
+enum RouletteNumType {
+  ROULETTE_NUM_TYPE_UNSPECIFIED = 0;
+  ODD = 1;
+  EVEN = 2;
+}
+
+enum RouletteHalf {
+  ROULETTE_HALF_TYPE_UNSPECIFIED = 0;
+  HALF_FIRST = 1;
+  HALF_SECOND = 2;
+}
+
+enum RouletteDozen {
+  ROULETTE_DOZEN_UNSPECIFIED = 0;
+  DOZEN_FIRST = 1;
+  DOZEN_SECOND = 2;
+  DOZEN_THIRD = 3;
+}
+
+enum RouletteColumn {
+  ROULETTE_COLUMN_UNSPECIFIED = 0;
+  COLUMN_FIRST = 1;
+  COLUMN_SECOND = 2;
+  COLUMN_THIRD = 3;
+}
+
+message GambleResult {
+  // Your new balance, after all results have been applied
+  int64 new_balance = 1;
+  // New balance, just formatted
+  string new_balance_str = 2;
+  // All results in order
+  //
+  // This is **including** your bet
+  //
+  // If you bet 5000 on a 1:1 and win, you get 10000, but only made 5000 plus
+  repeated uint64 winnings = 3;
+}
+
+message RouletteResponse {
+  // Result of spin
+  uint32 spin_result = 1;
+  GambleResult gamble_result = 2;
+}

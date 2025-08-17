@@ -1,0 +1,53 @@
+syntax="proto3";
+package de.tub;
+option go_package="git.tu-berlin.de/3s-teaching/as-ss25/proto";
+
+//
+// Get information on train rides and current delays.
+// Be careful --- this endpoint might behave in unexpected ways :-)
+//
+
+service TrainInfo {
+    rpc GetAllStationIds (AllStationsRequest) returns (AllStationsResponse);
+    rpc GetStationInfo (StationInfoRequest) returns (StationInfoResponse);
+    rpc GetNextDepartures (NextDeparturesRequest) returns (NextDeparturesResponse);
+}
+
+message Station {
+    int32 stationId = 1;
+    string name = 2;
+    bool active = 3;
+}
+
+message Departure {
+    int32 stationId = 1;
+    int32 destinationId = 2;
+    int32 expectedArrivalUnix = 3;
+    int32 delayMinutes = 4;
+}
+
+message AllStationsRequest {
+    string auth = 1;
+}
+
+message AllStationsResponse {
+    repeated int32 stationIds = 1;
+}
+
+message StationInfoRequest {
+    string auth = 1;
+    int32 stationId = 2;
+}
+
+message StationInfoResponse {
+    Station station = 1;
+}
+
+message NextDeparturesRequest {
+    string auth = 1;
+    int32 stationId = 2;
+}
+
+message NextDeparturesResponse {
+    repeated Departure departures = 1;
+}
